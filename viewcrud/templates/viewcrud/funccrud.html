@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="ko">
     <head>
@@ -7,10 +8,19 @@
         <style>
             body{font-family: 'Nanum Pen Script', cursive;}
         </style>
+        <script src={% static 'hi.js' %} type="text/javascript"></script>
+        <script>
+            
+        </script>
     </head>
     <body>
+        <h1 id="ma">세영이의 블로그 </h1>
+        
+        <button onclick="change()">뿅</button><br>
         <!-- 글쓰기 링크(버튼)-->
         <a href="{% url 'newblog' %}"> 글쓰기 </a>
+        
+        
         <!-- 블로그 글을 띄우는 부분 -->
         {% for blog in blogs %}
             <h2>{{blog.title}}</h2>
@@ -20,6 +30,7 @@
             <a href="{% url 'delete' blog.id %}">삭제</a>
             <hr>
         {% endfor %}
+
 
     </body>
 </html>
