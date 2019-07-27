@@ -2,11 +2,10 @@
 <!DOCTYPE html>
 <html lang="ko">
     <head>
-        <meta charset="utf-8">
-        <link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+        <meta charset="utf-8"><link href="https://fonts.googleapis.com/css?family=Jua&display=swap" rel="stylesheet">
         <title>싀알류디연습</title>
         <style>
-            body{font-family: 'Nanum Pen Script', cursive;}
+            body{font-family: 'Jua', sans-serif;}
         </style>
         <script src={% static 'hi.js' %} type="text/javascript"></script>
         <script>
@@ -20,16 +19,30 @@
         <!-- 글쓰기 링크(버튼)-->
         <a href="{% url 'newblog' %}"> 글쓰기 </a>
         
+        {% if user.is_authenticated %}
+        <br>
+        {{user.username}}님 환영합니다!
+        <a href="{% url 'logout' %}">로그아웃</a>
         
+        {% else %}
+        <br>
+        <a href="{% url 'signup' %}"> 회원가입</a>
+        <a href="{% url 'login' %}"> 로그인</a>
+        {% endif %}
         <!-- 블로그 글을 띄우는 부분 -->
+        
+        {% if user.is_authenticated %}
         {% for blog in blogs %}
-            <h2>{{blog.title}}</h2>
+        <a href="{% url 'detail' blog.id %}"><h2>{{blog.title}}</h2></a>
             <h5>{{blog.pub_date}}</h5>
             <p>{{blog.body}}</p>
             <a href="{% url 'update' blog.id %}">수정</a>
             <a href="{% url 'delete' blog.id %}">삭제</a>
             <hr>
         {% endfor %}
+        {% endif %}
+
+        
 
 
     </body>

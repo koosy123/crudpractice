@@ -8,5 +8,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',viewcrud.views.welcome, name="welcome"),
     path('funccrud/', include(viewcrud.urls)),
+    path('accounts/', include('accounts.urls')),
     # path('classcrud/',include(classcrud.urls)),
 ]

@@ -25,7 +25,7 @@ SECRET_KEY = '-sdx6j-8sl@hpv1v%y^c6rd0c0cq5^k3pymog!8i_-@xt23rt^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'viewcrud',
     'classcrud',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [

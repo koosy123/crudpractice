@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from .models import Blog
-from .forms import NewBlog
+from .models import Blog, Comment
+from .forms import NewBlog, BlogCommentForm
 # Create your views here.
 
 def welcome(request):
@@ -10,6 +10,42 @@ def welcome(request):
 def read(request):
     blogs = Blog.objects.all()
     return render(request, 'viewcrud/funccrud.html', {'blogs':blogs})
+
+def detail(request, pk):
+    blog_detail = get_object_or_404(Blog, pk=pk)
+    comments = Comment.objects.filter(blog_id=pk)
+ 
+    if request.method == 'POST':
+        comment_form = BlogCommentForm(request.POST)
+
+        if comment_form.is_valid():
+            content = comment_form.cleaned_data['comment_textfield']
+            com = comment_form.save(commit=False)
+            com.blog_id=pk
+            com.comment_user=request.user
+            com.comment_date=timezone.now()
+            com.save()
+            
+            context = {
+                'details': blog_detail,
+                'comments': comments,
+                'comment_form': comment_form
+             }
+            return render(request, 'viewcrud/detail.html',context)
+        else:
+            return render(request, 'viewcrud/detail.html',context)
+    
+    else:
+        comment_form = BlogCommentForm()
+
+    context = {
+        'details': blog_detail,
+        'comments': comments,
+        'comment_form': comment_form
+    }
+ 
+    return render(request, 'viewcrud/detail.html', context)
+
 
 def create(request):
     # 새로운 데이터 블로그 글 저장하는 역할 == POST
@@ -46,3 +82,4 @@ def delete(request, pk):
     blog = get_object_or_404(Blog, pk = pk) # 삭제하고 싶은 특정 블로그 가져옴
     blog.delete()
     return redirect('home')
+
